@@ -8,25 +8,33 @@
  extract the main content of the articles, and generate summaries. You can use
  any methodortool you prefer to perform the summarization.
  The initial source will only be articles from the BBC (https://www.bbc.com/news)
+
+ 
  Technical Details
+ 
  ● Scalability: You can assume that the load of the requests is about 1/sec, but
  makesurethat your design can support a load several orders of magnitude
  larger than that.
+ 
  ● Otherproviders: The system should be able to escalate to other news
  providers easily (Clarin, La Nacion, etc). If the User inputs a URL that is not
  from a supported news provider, the system should respond with an error
  message that the provider has not yet been implemented.
+ 
  ● URLHandling:URLsmightrepeatthemselves, and as with any good
  engineering system, we would like to avoid fetching and processing the
  samepageoverandoveragain.
+ 
  ● ContentExtraction: News articles come from various websites with
  different HTML structures. Your system should reliably extract the main
  content of the article, excluding navigation menus, ads, comments, and
  other non-essential elements.
+ 
  ● TextProcessing:
  ○ Summarization: Implementanefficient way to generate a concise
  summaryofthearticle's content. You can use any method or tool
  you prefer to perform the summarization.
+ 
  ● ErrorHandling:
  ○ Ifthesite cannot access the news article because it requires an
  account or log in to view it, your service should return a custom error
