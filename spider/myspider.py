@@ -1,7 +1,5 @@
-
-
-
 import scrapy
+import json
 
 class NewsSpider(scrapy.Spider):
     name = "news_spider"
@@ -9,12 +7,14 @@ class NewsSpider(scrapy.Spider):
     
     def parse(self, response):
         title = response.xpath('//h1/text()').get()
-        content = response.xpath('//p/text()').getall()
+        content = response.xpath('//p[not(ancestor::aside)]/text()').getall()
         item = {
             'title' : title,
-            # 'content': content
-            'content': " ".join(content) #combina todo el contenido en una sola cadena de texto
+            
+            'content': " ".join(content)
         }
         
-
+        with open("news.json", "a",encoding='utf-8') as file:
+            file.write(json.dumps(item, ensure_ascii=False) + "\n")
+    
         yield item
