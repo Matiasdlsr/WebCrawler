@@ -1,4 +1,4 @@
-# Challenge-sirius
+# Challenge
 
  ## NewsWebCrawler
  ### Task Overview

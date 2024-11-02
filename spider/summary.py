@@ -28,4 +28,3 @@ def summarize_content(input_filename, output_filename):
         json.dump(summaries, outfile, ensure_ascii=False, indent=4)
 
 summarize_content('news.json', 'summary.json')
-

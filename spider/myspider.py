@@ -10,7 +10,6 @@ class NewsSpider(scrapy.Spider):
         content = response.xpath('//p[not(ancestor::aside)]/text()').getall()
         item = {
             'title' : title,
-            
             'content': " ".join(content)
         }
         
