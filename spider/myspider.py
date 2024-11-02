@@ -8,11 +8,13 @@ class NewsSpider(scrapy.Spider):
     start_urls = ['https://www.bbc.com/news/articles/c4g95r3lnr2o']
     
     def parse(self, response):
-        title = response.xpath ('//div[@class="sc-18fde0d6-0 eeiVGB"]/h1/text()').get()
-        content = response.xpath('//div[@class="sc-18fde0d6-0 dlWCEZ"]/p/text()').getall()
+        title = response.xpath('//h1/text()').get()
+        content = response.xpath('//p/text()').getall()
         item = {
             'title' : title,
-            'content': content
+            # 'content': content
+            'content': " ".join(content) #combina todo el contenido en una sola cadena de texto
         }
         
+
         yield item
