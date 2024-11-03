@@ -6,7 +6,7 @@ NLTK: Libreria para procesamiento de lenguaje natural // Sumy: Libreria para res
 
 Flask: Para la creacion de API RESTful 
 
-Redis // SQL Server??
+Redis // SQL Server // SQLite ??
 
 Json: como formato de salida para los resumenes
 
