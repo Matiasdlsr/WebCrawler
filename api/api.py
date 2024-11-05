@@ -1,39 +1,43 @@
-from flask import Flask, jsonify, request
-import json
+from flask import Flask, request, jsonify
 import os
 import subprocess
+import json
+
 
 app = Flask(__name__)
 
-# Ruta a la carpeta donde están myspider.py y summary.py
-SPIDER_DIR = os.path.join(os.path.dirname(__file__), '../spider/') 
+SPIDER_PATH = os.path.join(os.path.dirname(__file__), '../spider')
+SUMMARY_FILE = os.path.join(SPIDER_PATH, 'summary.json')
+VENV_PYTHON = os.path.join(SPIDER_PATH, '../new_env/Scripts/python')
 
-@app.route('/api/generate-summary', methods=['POST'])
-def generate_summary():
-    data = request.json
-    url = data.get('url')
-    print("data {data}")
-    print(url)
+@app.route('/api/summarize', methods=['POST'])
+def summarize():
     
+    data = request.get_json()
+    url = data.get('url')
+
     if not url:
-        return jsonify({'error': 'URL is required'}), 400
+        return jsonify({'error': 'URL es requerida'}), 400
 
-    # 1. Ejecuta myspider.py con la URL proporcionada
-    subprocess.run(['scrapy', 'runspider', os.path.join(SPIDER_DIR, 'myspider.py'), '-a', f'url={url}'])
-
-    # 2. Ejecuta summary.py para procesar los datos generados por myspider.py
-    subprocess.run(['python', os.path.join(SPIDER_DIR, 'summary.py')])
-
-    # 3. Carga el archivo summary.json
-    summary_path = os.path.join(SPIDER_DIR, 'summary.json')
     try:
-        with open(summary_path, 'r', encoding='utf-8') as f:
-            summary_data = json.load(f)
-    except FileNotFoundError:
-        return jsonify({'error': 'summary.json file not found'}), 500
+        subprocess.run(['scrapy', 'runspider', os.path.join(SPIDER_PATH, 'myspider.py'), '-a', f'url={url}'],
+                    check=True, cwd=SPIDER_PATH)
+    except subprocess.CalledProcessError as e:
+        return jsonify({'error': 'Error al ejecutar el spider'}), 500
+    
 
-    # Devuelve el contenido de summary.json
-    return jsonify(summary_data)
+    try:
+        subprocess.run([VENV_PYTHON, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
+    except Exception as e:
+        print(f"Error al generar el resumen: {e}")
+        return jsonify({"error": "Error al generar el resumen"}), 500
+
+    if os.path.exists(SUMMARY_FILE):
+        with open(SUMMARY_FILE, 'r', encoding='utf-8') as file:
+            summary_data = json.load(file)
+        return jsonify(summary_data), 200
+    else:
+        return jsonify({'error': 'No se encontró el archivo de resumen'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

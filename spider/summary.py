@@ -1,51 +1,62 @@
 import json
-import re
 import os
+import logging
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 
-# Ruta específica para encontrar `news.json` en `api/data`
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 NEWS_DIR = os.path.join(os.path.dirname(__file__), '../api/data')
 SUMMARY_PATH = os.path.join(os.path.dirname(__file__), 'summary.json')
 
 def get_latest_news_file(directory=NEWS_DIR):
-    # Filtra y selecciona el archivo más reciente que coincida con el patrón "news_*.json"
-    files = [f for f in os.listdir(directory) if f.startswith("news_") and f.endswith(".json")]
+    files = [file for file in os.listdir(directory) if file.startswith("news_") and file.endswith(".json")]
     if not files:
         raise FileNotFoundError("No se encontró ningún archivo de noticias para procesar.")
     latest_file = max(files, key=lambda f: os.path.getctime(os.path.join(directory, f)))
-    print(f"Archivos encontrados en {NEWS_DIR}: {files}")
-    print(f"Último archivo detectado: {latest_file}")
+    logger.info(f"Último archivo detectado: {latest_file}")
     return os.path.join(directory, latest_file)
 
-def summarize_content(input_filename, output_filename=SUMMARY_PATH):
-    with open(input_filename, 'r', encoding='utf-8') as file:
-        data = json.load(file)
 
-    summaries = []
-    if isinstance(data, dict):
-        title = data.get('title')
-        content = " ".join(data.get('content', []))
+def summarize_content(input_filename, output_filename=SUMMARY_PATH, sentence_count=5):
+    try:
+        with open(input_filename, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+    except json.JSONDecodeError as err:
+        logger.error(f"Error al decodificar JSON: {err}")
+        return
 
-        if content.strip():
-            parser = PlaintextParser.from_string(content, Tokenizer("english"))
-            summarizer = LexRankSummarizer()
-            summary = summarizer(parser.document, 5)
+    title = data.get('title', "Sin título")
+    content = data.get('content', "")
+    if isinstance(content, list):
+        content = " ".join(content)
 
-            summary_text = " ".join(str(sentence) for sentence in summary)
-            summary_text = re.sub(r'(?<=\w) (?=\w)', '', summary_text)
-            summary_text = re.sub(r' {3,}', ' ', summary_text)
-            summaries.append({"title": title, "summary": summary_text})
+    if not content.strip():
+        logger.warning("El contenido está vacío, no se generará el resumen.")
+        return
 
-    with open(output_filename, 'w', encoding='utf-8') as outfile:
-        json.dump(summaries, outfile, ensure_ascii=False, indent=4)
-        print(f"Resumen guardado en {output_filename}")
+    parser = PlaintextParser.from_string(content, Tokenizer("english"))
+    summarizer = LexRankSummarizer()
+    summary = summarizer(parser.document, sentence_count)
+    summary_text = " ".join(str(sentence) for sentence in summary)
+    
 
-# Ejecutar el resumen sobre el archivo de noticias más reciente en `NEWS_DIR`
+    summary_data = [{"title": title, "summary": summary_text}]
+    try:
+        with open(output_filename, 'w', encoding='utf-8') as outfile:
+            json.dump(summary_data, outfile, ensure_ascii=False, indent=4)
+        logger.info(f"Resumen guardado en {output_filename}")
+    except IOError as err:
+        logger.error(f"Error al guardar el resumen: {err}")
+
+# Ejecutar el resumen
 try:
     latest_news_file = get_latest_news_file()
     summarize_content(latest_news_file)
-    print(f"Resumen generado en summary.json basado en {latest_news_file}")
-except FileNotFoundError as e:
-    print(e)
+    logger.info(f"Resumen generado en summary.json basado en {latest_news_file}")
+except FileNotFoundError as err:
+    logger.error(err)
