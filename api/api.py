@@ -10,6 +10,9 @@ SPIDER_PATH = os.path.join(os.path.dirname(__file__), '../spider')
 SUMMARY_FILE = os.path.join(SPIDER_PATH, 'summary.json')
 VENV_PYTHON = os.path.join(SPIDER_PATH, '../new_env/Scripts/python')
 
+ALLOWED_DOMAINS = ["bbc.com", "clarin.com", "lanacion.com.ar"]
+
+
 @app.route('/api/summarize', methods=['POST'])
 def summarize():
     
@@ -19,17 +22,20 @@ def summarize():
     if not url:
         return jsonify({'error': 'URL es requerida'}), 400
 
+    domain = url.split("/")[2]  
+    if not any(domain.endswith(allowed_domain) for allowed_domain in ALLOWED_DOMAINS):
+        return jsonify({'error': 'Proveedor aun no implementado'}), 400
+    
     try:
         subprocess.run(['scrapy', 'runspider', os.path.join(SPIDER_PATH, 'myspider.py'), '-a', f'url={url}'],
                     check=True, cwd=SPIDER_PATH)
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError as err:
         return jsonify({'error': 'Error al ejecutar el spider'}), 500
     
-
     try:
         subprocess.run([VENV_PYTHON, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
-    except Exception as e:
-        print(f"Error al generar el resumen: {e}")
+    except Exception as err:
+        print(f"Error al generar el resumen: {err}")
         return jsonify({"error": "Error al generar el resumen"}), 500
 
     if os.path.exists(SUMMARY_FILE):
