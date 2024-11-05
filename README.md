@@ -13,7 +13,7 @@
  ```Technical Details ```
  
  ● ```Scalability ```: You can assume that the load of the requests is about 1/sec, but
- makesurethat your design can support a load several orders of magnitude
+ make sure that your design can support a load several orders of magnitude
  larger than that.
  
  ● ``` Otherproviders ```: The system should be able to escalate to other news
@@ -21,9 +21,9 @@
  from a supported news provider, the system should respond with an error
  message that the provider has not yet been implemented.
  
- ● ``` URLHandling ```:URLsmightrepeatthemselves, and as with any good
+ ● ``` URLHandling ```:URLs might repeat them selves, and as with any good
  engineering system, we would like to avoid fetching and processing the
- samepageoverandoveragain.
+ same page over and over again.
  
  ● ```ContentExtraction```: News articles come from various websites with
  different HTML structures. Your system should reliably extract the main
@@ -32,24 +32,24 @@
  
  ● ```TextProcessing```:
  ○ Summarization: Implementanefficient way to generate a concise
- summaryofthearticle's content. You can use any method or tool
+ summary of th earticle's content. You can use any method or tool
  you prefer to perform the summarization.
  
  ● ```ErrorHandling```:
- ○ Ifthesite cannot access the news article because it requires an
+ ○ If the site cannot access the news article because it requires an
  account or log in to view it, your service should return a custom error
  indicating that the article cannot be accessed.
  
 ● ```Performance Optimization```: Assume the corpus can be very large, so naive
- methods maynotbequickenoughtorenderresults promptly. You will
+ methods may not be quick enought orender results promptly. You will
  need to address this through your choice of algorithms, data structures, or
  technologies.
  
- ● ```OutputFormat```:ThesummariesshouldbereturnedinaJSONformat. This
+ ● ```OutputFormat```:The summaries should be returned in a JSONformat. This
  is not a front-end development assignment, so you don't need to focus on
  making the output pretty.
  
- ● ```CachingandStorage ```: Implementcachingtostore processed articles to
+ ● ```CachingandStorage ```: Implement caching to store processed articles to
  avoid redundant fetching and processing, thereby improving performance
  The list of URLs will be provided through a set of CURL calls. Please use
  simulateRequests.sh script to simulate those requests while you develop.

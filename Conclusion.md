@@ -6,7 +6,7 @@ NLTK: Libreria para procesamiento de lenguaje natural // Sumy: Libreria para res
 
 Flask: Para la creacion de API RESTful 
 
-Redis // SQL Server??
+Redis // SQL Server // SQLite ??
 
 Json: como formato de salida para los resumenes
 
@@ -18,6 +18,6 @@ Updates:
 
 Estadisticas (2/11) -> El resumen generado actualmente resume el contenido ~30%
 
-Mejoras (2/11) -> El procesamiento de texto no toma palabras resaltadas, hipervinculos.
+Mejoras (2/11) -> El procesamiento de texto no toma palabras resaltadas, hipervinculos, letras acentuadas.
 
 Problemas (2/11) -> El resumen genera espacios entre cada letra y palabra (solucionado con expresiones regulares)
