@@ -14,7 +14,7 @@ NEWS_DIR = os.path.join(os.path.dirname(__file__), '../api/data')
 SUMMARY_PATH = os.path.join(os.path.dirname(__file__), 'summary.json')
 
 def get_latest_news_file(directory=NEWS_DIR):
-    files = [file for file in os.listdir(directory) if file.startswith("news_") and file.endswith(".json")]
+    files = [file for file in os.listdir(directory) if file.startswith("news") and file.endswith(".json")]
     if not files:
         raise FileNotFoundError("No se encontró ningún archivo de noticias para procesar.")
     latest_file = max(files, key=lambda f: os.path.getctime(os.path.join(directory, f)))
