@@ -1,6 +1,5 @@
 import scrapy
 import json
-import time
 import os
 
 class NewsSpider(scrapy.Spider):
