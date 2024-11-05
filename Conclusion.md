@@ -28,11 +28,13 @@ Descargar el servidor de redis: https://github.com/MicrosoftArchive/redis/releas
 
 Iniciar el servidor de redis: redis-server
 
-Instalar twisted : pip install twisted==22.10.0
+<!-- Instalar twisted : pip install twisted==22.10.0 -->
 
 en \lib\sumy\models\tf.py cambiar from collections import Sequence por from collections.abc import Sequence
 
 fijarse el archivo download_nltk y su contenido punk o punk_tab
+
+
 Ejecutar la API : python -m api.api
 
 Realizar la peticion (en gitbash): 
