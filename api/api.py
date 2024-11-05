@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify # type: ignore
 import os
 import subprocess
 import json
+import sys
 from cache.redis_cache import RedisCache
 
 app = Flask(__name__)
@@ -37,7 +38,8 @@ def summarize():
         return jsonify({'error': 'Error al ejecutar el spider'}), 500
     
     try:
-        subprocess.run([VENV_PYTHON, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
+        # subprocess.run([VENV_PYTHON, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
+        subprocess.run([sys.executable, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
     except Exception as err:
         return jsonify({"error": "Error al generar el resumen"}), 500
 

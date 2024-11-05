@@ -1,9 +1,9 @@
 import json
 import os
 import logging
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.nlp.tokenizers import Tokenizer
-from sumy.summarizers.lex_rank import LexRankSummarizer
+from sumy.parsers.plaintext import PlaintextParser # type: ignore
+from sumy.nlp.tokenizers import Tokenizer # type: ignore
+from sumy.summarizers.lex_rank import LexRankSummarizer # type: ignore
 
 
 logging.basicConfig(level=logging.INFO)
@@ -53,7 +53,6 @@ def summarize_content(input_filename, output_filename=SUMMARY_PATH, sentence_cou
     except IOError as err:
         logger.error(f"Error al guardar el resumen: {err}")
 
-# Ejecutar el resumen
 try:
     latest_news_file = get_latest_news_file()
     summarize_content(latest_news_file)

@@ -1,5 +1,6 @@
 flask==2.3.3
-scrapy==2.5.1
+scrapy==2.11.2
+twisted==24.10.0
 sumy==0.9.0
 nltk==3.6.3
 numpy==2.1.3
