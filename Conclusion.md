@@ -6,7 +6,7 @@ NLTK: Libreria para procesamiento de lenguaje natural // Sumy: Libreria para res
 
 Flask: Para la creacion de API RESTful 
 
-Redis // SQL Server // SQLite ??
+Redis para guardar en cache los resumenes generados y poder acceder rapidamente a estos.
 
 Json: como formato de salida para los resumenes
 
@@ -20,4 +20,20 @@ Estadisticas (2/11) -> El resumen generado actualmente resume el contenido ~30%
 
 Mejoras (2/11) -> El procesamiento de texto no toma palabras resaltadas, hipervinculos, letras acentuadas.
 
-Problemas (2/11) -> El resumen genera espacios entre cada letra y palabra (solucionado con expresiones regulares)
+## Pasos para iniciar el proyecto
+
+Instalar dependencias: pip install -r requirements.txt
+
+Descargar el servidor de redis: https://github.com/MicrosoftArchive/redis/releases
+
+Iniciar el servidor de redis: redis-server
+
+Ejecutar la API : python -m api.api
+
+Realizar la peticion (en gitbash): 
+
+curl -X POST http://127.0.0.1:5000/api/summarize -H "Content-Type: application/json" -d "{\"url\": \"https://www.bbc.com/mundo/articles/c981zn3ymygo\"}"
+
+curl -X POST http://127.0.0.1:5000/api/summarize -H "Content-Type: application/json" -d "{\"url\": \"https://www.lanacion.com.ar/deportes/automovilismo/la-discusion-de-franco-colapinto-con-su-equipo-cuando-pidio-entrar-a-boxes-para-cambiar-los-nid03112024/\"}"
+
+curl -X POST http://127.0.0.1:5000/api/summarize -H "Content-Type: application/json" -d "{\"url\": \"https://www.infobae.com/deportes/2024/11/01/franco-colapinto-con-infobae-su-futuro-los-elogios-de-hamilton-y-verstappen-y-el-furor-de-los-hinchas-argentinos/\"}"
