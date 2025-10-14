@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify # type: ignore
+from flask import Flask, request, jsonify
 import os
 import subprocess
 import json
@@ -38,8 +38,8 @@ def summarize():
         return jsonify({'error': 'Error al ejecutar el spider'}), 500
 #ejecucion del script de resumen de datos 'summary.py'
     try:
-        # subprocess.run([VENV_PYTHON, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
         subprocess.run([sys.executable, os.path.join(SPIDER_PATH, 'summary.py')], check=True, cwd=SPIDER_PATH)
+#manejo de errores
     except Exception as err:
         return jsonify({"error": "Error al generar el resumen"}), 500
 #apertura del archivo 'summary.json'

@@ -1,9 +1,9 @@
 import json
 import os
 import logging
-from sumy.parsers.plaintext import PlaintextParser # type: ignore
-from sumy.nlp.tokenizers import Tokenizer # type: ignore
-from sumy.summarizers.lex_rank import LexRankSummarizer # type: ignore
+from sumy.parsers.plaintext import PlaintextParser 
+from sumy.nlp.tokenizers import Tokenizer 
+from sumy.summarizers.lex_rank import LexRankSummarizer
 
 #log de: informacion y errores
 logging.basicConfig(level=logging.INFO)

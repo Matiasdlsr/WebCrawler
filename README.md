@@ -46,8 +46,7 @@
  technologies.
  
  ● ```OutputFormat```:The summaries should be returned in a JSONformat. This
- is not a front-end development assignment, so you don't need to focus on
- making the output pretty.
+ is not a front-end development assignment, so you don't need to focus on making the output pretty.
  
  ● ```CachingandStorage ```: Implement caching to store processed articles to
  avoid redundant fetching and processing, thereby improving performance

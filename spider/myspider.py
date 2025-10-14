@@ -1,4 +1,4 @@
-import scrapy # type: ignore
+import scrapy 
 import json
 import os
 

@@ -16,9 +16,8 @@ Updates:
 
 -Manejo de errores
 
-Estadisticas (2/11) -> El resumen generado actualmente resume el contenido ~30%
+Estadisticas -> El resumen generado actualmente resume el contenido ~30%
 
-Mejoras (2/11) -> El procesamiento de texto no toma palabras resaltadas, hipervinculos, letras acentuadas.
 
 ## Pasos para iniciar el proyecto
 
