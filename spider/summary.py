@@ -63,3 +63,5 @@ try:
     logger.info(f"Resumen generado en summary.json basado en {news_file}")
 except FileNotFoundError as err:
     logger.error(err)
+
+# Ejecuta la función para obtener el archivo de noticias y generar el resumen
